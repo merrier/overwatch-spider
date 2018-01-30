@@ -3,8 +3,7 @@ var fs = require("fs");
 var path = require("path");
 var { URL } = require('url');
 
-
-export default function download(url, fileName, dirName) {
+function download(url, fileName, dirName) {
   console.log("start downloading " + url);
   const options = new URL(url);
   var req = http.request(options, downloadCallback(url, fileName, dirName));
@@ -43,11 +42,11 @@ function downloadCallback(url, fileName, dirName) {
         // startDownloadTask(imgSrc, dirName, index);
         return;
       }
-      fs.appendFile(dirName + "/" + fileName + path.extname(url), totalBuff, {mode: 0o777}, function(err){
-        console.log(url + " append error");
-      });
+      fs.appendFile(dirName + "/" + fileName + path.extname(url), totalBuff, {mode: 0o777}, function(err){});
     });
   };
 
   return callback;
 }
+
+module.exports = download;
