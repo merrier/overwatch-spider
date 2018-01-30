@@ -1,0 +1,20 @@
+{
+  "name": "overwatch-spider",
+  "version": "1.0.0",
+  "description": "overwatch spider based on NodeJS & node-crawler",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "overwatch",
+    "spider",
+    "crawler",
+    "nodejs"
+  ],
+  "author": "merrier",
+  "license": "MIT",
+  "dependencies": {
+    "crawler": "^1.1.2"
+  }
+}
