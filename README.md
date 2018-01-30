@@ -39,6 +39,12 @@ overwatch-spider
 
 * [node-crawler](https://github.com/bda-research/node-crawler)
 
+
+
 ## Todolist
 
 * nomore, that's all :)
+
+## License
+
+MIT
