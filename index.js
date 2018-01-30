@@ -6,8 +6,9 @@ var Crawler = require("crawler");
 var http = require("http");
 var fs = require("fs");
 var path = require("path");
-const { URL } = require('url');
+var download = require("./download");
 
+// 检测是否为合法的URL地址
 function checkUrl(urlString){
   if(urlString !== ""){
     var reg=/(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/;
@@ -16,6 +17,7 @@ function checkUrl(urlString){
   return false;
 }
 
+// 解析query string，return一个包含所有key: value的Object
 function parseQueryString(flv){
   var reg = /(([^?&=]+)(?:=([^?&=]*))*)/g
   var result = {}
@@ -31,101 +33,7 @@ function parseQueryString(flv){
   return result
 }
 
-function downloadCoverPicCallback(coverPic, title, dirName) {
-  var callback = function(res) {
-    console.log("request: " + coverPic + " return status: " + res.statusCode);
-
-    var contentLength = parseInt(res.headers['content-length']);
-    var fileBuff = [];
-
-    res.on('data', function (chunk) {
-      var buffer = new Buffer(chunk);
-      fileBuff.push(buffer);
-    });
-
-    res.on('end', function() {
-
-      console.log("end downloading " + coverPic);
-
-      if (isNaN(contentLength)) {
-        console.log(coverPic + " content length error");
-        return;
-      }
-      var totalBuff = Buffer.concat(fileBuff);
-      console.log("totalBuff.length = " + totalBuff.length + " " + "contentLength = " + contentLength);
-      if (totalBuff.length < contentLength) {
-        console.log(coverPic + " download error");
-        // startDownloadTask(imgSrc, dirName, index);
-        return;
-      }
-      fs.appendFile(dirName + "/" + title + path.extname(coverPic), totalBuff, {mode: 0o777}, function(err){
-        console.log(coverPic + " append error");
-      });
-    });
-  };
-
-  return callback;
-}
-
-function downloadMp4Callback(mp4, title, dirName) {
-  var callback = function(res) {
-    console.log("request: " + mp4 + " return status: " + res.statusCode);
-    var contentLength = parseInt(res.headers['content-length']);
-    var fileBuff = [];
-
-    res.on('data', function (chunk) {
-      var buffer = new Buffer(chunk);
-      fileBuff.push(buffer);
-    });
-
-    res.on('end', function() {
-      console.log("end downloading " + mp4);
-      if (isNaN(contentLength)) {
-        console.log(mp4 + " content length error");
-        return;
-      }
-
-      var totalBuff = Buffer.concat(fileBuff);
-      console.log("totalBuff.length = " + totalBuff.length + " " + "contentLength = " + contentLength);
-      if (totalBuff.length < contentLength) {
-        console.log(mp4 + " download error");
-        // startDownloadTask(imgSrc, dirName, index);
-        return;
-      }
-      fs.appendFile(dirName + "/" + title + path.extname(mp4), totalBuff, {mode: 0o777}, function(err){
-        console.log(mp4 + " append error");
-      });
-    });
-  };
-
-  return callback;
-}
-
-
-var downloadCoverPic = function(coverPic, title, dirName) {
-  console.log("start downloading " + coverPic);
-  const options = new URL(coverPic);
-  var req = http.request(options, downloadCoverPicCallback(coverPic, title, dirName));
-  req.on('error', function(e){
-    console.log("request " + coverPic + " error, try again");
-    // startDownloadTask(imgSrc, dirName, index);
-  });
-  req.end();
-}
-
-
-var downloadMp4 = function(mp4, title, dirName) {
-  console.log("start downloading " + mp4);
-  const options = new URL(mp4);
-  var req = http.request(options, downloadMp4Callback(mp4, title, dirName));
-  req.on('error', function(e){
-    console.log("request " + mp4 + " error, try again");
-    // startDownloadTask(imgSrc, dirName, index);
-  });
-  req.end();
-}
-
-
+// new一个Crawler实例
 var c = new Crawler({
   maxConnections : 10,
   // This will be called for each crawled page
@@ -138,6 +46,7 @@ var c = new Crawler({
       //a lean implementation of core jQuery designed specifically for the server
       var len = $('.media-item').length;
 
+      // 判断是否存在overwatch目录，不存在就创建
       fs.access('./overwatch', (err) => {
         if(err){
           fs.mkdir(__dirname + '/overwatch', function (err) {
@@ -148,17 +57,22 @@ var c = new Crawler({
         }
       });
 
+      // 遍历获取封面和视频地址，以及视频名称
       for(var i = 0; i< len; i++){
 
         var dirName = './overwatch';
         var item = $('.media-item').eq(i);
         var query = item.data('flv');
+
+        // 将https地址都替换为http地址，这样可以统一用http模块
         var coverPic = parseQueryString(query)['coverpic'].replace(/^https/, 'http');
         var mp4 = item.data('mp4').replace(/^https/, 'http');
+
         var title = item.data('title');
 
-        checkUrl(coverPic) && downloadCoverPic(coverPic, title, dirName);
-        checkUrl(mp4) && downloadMp4(mp4, title, dirName);
+        // 不是合法的url地址就不会进行下载
+        checkUrl(coverPic) && download(coverPic, title, dirName);
+        checkUrl(mp4) && download(mp4, title, dirName);
 
       }
     }
