@@ -46,10 +46,10 @@ var c = new Crawler({
       //a lean implementation of core jQuery designed specifically for the server
       var len = $('.media-item').length;
 
-      // 判断是否存在overwatch目录，不存在就创建
-      fs.access('./overwatch', (err) => {
+      // 判断是否存在media目录，不存在就创建
+      fs.access('./media', (err) => {
         if(err){
-          fs.mkdir(__dirname + '/overwatch', function (err) {
+          fs.mkdirSync(__dirname + '/media', function (err) {
             if(err)
               throw err;
             console.log('创建目录成功')
@@ -60,7 +60,7 @@ var c = new Crawler({
       // 遍历获取封面和视频地址，以及视频名称
       for(var i = 0; i< len; i++){
 
-        var dirName = './overwatch';
+        var dirName = './media';
         var item = $('.media-item').eq(i);
         var query = item.data('flv');
 
