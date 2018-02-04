@@ -2,7 +2,7 @@
 
 Overwatch Spider with NodeJS + node-crawler
 
-> 该爬虫用于下载[http://ow.blizzard.cn/media/](http://ow.blizzard.cn/media/)和[http://ow.blizzard.cn/heroes/](http://ow.blizzard.cn/heroes/)英雄技能介绍的视频和封面图
+> 该爬虫用于下载[http://ow.blizzard.cn/media/](http://ow.blizzard.cn/media/)上面的视频和[http://ow.blizzard.cn/heroes/](http://ow.blizzard.cn/heroes/)中所有英雄的技能介绍的视频和封面图
 
 ## Install
 
@@ -22,9 +22,9 @@ npm install
 npm run media
 ```
 
-> 爬虫会爬取[http://ow.blizzard.cn/media/](http://ow.blizzard.cn/media/)上的视频和对应的封面图并进行下载.
+> 爬虫会爬取[http://ow.blizzard.cn/media/](http://ow.blizzard.cn/media/)上的视频和对应的封面图并进行下载.
 
-爬虫会在当前目录中新建（如果不存在的话）一个名为`media`的文件夹，爬取的所有图片和视频都将下载在这里，所以当爬取任务完成时，目录结构将类似这样：
+爬虫会在当前目录中新建（如果不存在的话）一个名为`media`的文件夹，爬取的所有图片和视频都将下载在这里，所以当爬取任务完成时，目录结构将类似这样：
 
 
 ```
@@ -45,9 +45,9 @@ overwatch-spider
 npm run ability
 ```
 
-> 爬虫会爬取[http://ow.blizzard.cn/heroes/](http://ow.blizzard.cn/heroes/)上所有英雄的技能介绍视频并进行下载（如果有对应的技能介绍封面图的话，也会进行爬取和下载）
+> 爬虫会爬取[http://ow.blizzard.cn/heroes/](http://ow.blizzard.cn/heroes/)上所有英雄的技能介绍视频并进行下载（如果有对应的技能介绍封面图的话，也会进行爬取和下载）
 
-爬虫会在当前目录中新建（如果不存在的话）一个名为`ability`的文件夹，爬取的所有图片和视频都将下载在这里，并按照英雄名称建立新的文件夹，当爬取任务完成时，目录结构将类似这样：
+爬虫会在当前目录中新建（如果不存在的话）一个名为`ability`的文件夹，爬取的所有图片和视频都将下载在这里，并按照英雄名称建立新的文件夹，当爬取任务完成时，目录结构将类似这样：
 
 
 ```
