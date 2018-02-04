@@ -22,9 +22,9 @@ npm install
 npm run media
 ```
 
-> 爬虫会爬取[http://ow.blizzard.cn/media/](http://ow.blizzard.cn/media/)上的视频和对应的封面图并进行下载.
+爬虫会爬取[http://ow.blizzard.cn/media/](http://ow.blizzard.cn/media/)上的视频和对应的封面图并进行下载.
 
-爬虫会在当前目录中新建（如果不存在的话）一个名为`media`的文件夹，爬取的所有图片和视频都将下载在这里，所以当爬取任务完成时，目录结构将类似这样：
+爬虫会在当前目录中新建（如果不存在的话）一个名为`media`的文件夹，爬取的所有图片和视频都将下载在这里，所以当爬取任务完成时，目录结构将类似这样：
 
 
 ```
