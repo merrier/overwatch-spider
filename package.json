@@ -17,6 +17,6 @@
   "author": "merrier",
   "license": "MIT",
   "dependencies": {
-    "crawler": "^1.1.2"
+    "crawler": "^1.1.4"
   }
 }
